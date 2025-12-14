@@ -12,7 +12,7 @@
 #   Continues-Integration_build_and_push:
 #     runs-on: self-hosted
 #     env:
-#       ECR_REGISTRY: 505789306397.dkr.ecr.us-east-1.amazonaws.com
+#       ECR_REGISTRY:  026764164788.dkr.ecr.us-east-1.amazonaws.com
 #       ECR_REPOSITORY: bank-backendapi
 #       AWS_REGION: us-east-1
 #       IMAGE_TAG: ${{ github.run_number }}
@@ -58,7 +58,7 @@
 #     runs-on: self-hosted
 #     needs: Continues-Integration_build_and_push
 #     env:
-#       ECR_REGISTRY: 505789306397.dkr.ecr.us-east-1.amazonaws.com
+#       ECR_REGISTRY:  026764164788.dkr.ecr.us-east-1.amazonaws.com
 #       ECR_REPOSITORY: bank-backendapi
 #       IMAGE_TAG: ${{ github.run_number }}
 #     steps:
@@ -67,11 +67,11 @@
 #           GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
 #           GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
 #       run: |
-#          git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/Team-final-project/kubernetes-repo.git
+#          git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/Team-final-project/kubernetes-manifest-file.git
          
-#          cd kubernetes-repo
-#          git config --global user.email "pod1finalproject@gmail.com"
-#          git config --global user.name "pod1project"
+#          cd kubernetes-manifest-file
+#          git config --global user.email "awsbenjass1@gmail.com"
+#          git config --global user.name "benjass1"
 
 #          sed -i "s+${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:.*+${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}+g" ./bank-project/backendapi.yaml
 
@@ -96,7 +96,7 @@
 #   Continues-Integration_build_and_push:
 #     runs-on: self-hosted
 #     env:
-#       ECR_REGISTRY: 505789306397.dkr.ecr.us-east-1.amazonaws.com
+#       ECR_REGISTRY:  026764164788.dkr.ecr.us-east-1.amazonaws.com
 #       ECR_REPOSITORY: bank-backendapi
 #       AWS_REGION: us-east-1
 #       IMAGE_TAG: ${{ github.run_number }}
@@ -146,7 +146,7 @@
 #     runs-on: self-hosted
 #     needs: Continues-Integration_build_and_push
 #     env:
-#       ECR_REGISTRY: 505789306397.dkr.ecr.us-east-1.amazonaws.com
+#       ECR_REGISTRY:  026764164788.dkr.ecr.us-east-1.amazonaws.com
 #       ECR_REPOSITORY: bank-backendapi
 #       IMAGE_TAG: ${{ github.run_number }}
 
@@ -157,14 +157,14 @@
 #         GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
 #         GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
 #       run: |
-#         git clone https://${env:GIT_USERNAME}:${env:GIT_PASSWORD}@github.com/Team-final-project/kubernetes-repo.git
+#         git clone https://${env:GIT_USERNAME}:${env:GIT_PASSWORD}@github.com/Team-final-project/kubernetes-manifest-file.git
 
-#         Set-Location kubernetes-repo
-#         git config --global user.email "pod1finalproject@gmail.com"
-#         git config --global user.name "pod1project"
+#         Set-Location kubernetes-manifest-file
+#         git config --global user.email "awsbenjass1@gmail.com"
+#         git config --global user.name "benjass1"
 
 #         # 🟦 FIXED — Windows-compatible string replacement
-#         (Get-Content ./bank-project/backendapi.yaml) -replace "505789306397.dkr.ecr.us-east-1.amazonaws.com/bank-backendapi:.*", "$env:ECR_REGISTRY/$env:ECR_REPOSITORY:$env:IMAGE_TAG" | Set-Content ./bank-project/backendapi.yaml
+#         (Get-Content ./bank-project/backendapi.yaml) -replace " 026764164788.dkr.ecr.us-east-1.amazonaws.com/bank-backendapi:.*", "$env:ECR_REGISTRY/$env:ECR_REPOSITORY:$env:IMAGE_TAG" | Set-Content ./bank-project/backendapi.yaml
 
 #         git add bank-project/backendapi.yaml
 #         git commit -m "Update backendapi image to version $env:IMAGE_TAG"
@@ -182,7 +182,7 @@ jobs:
   build_and_push:
     runs-on: self-hosted
     env:
-      ECR_REGISTRY: 505789306397.dkr.ecr.us-east-1.amazonaws.com
+      ECR_REGISTRY:  026764164788.dkr.ecr.us-east-1.amazonaws.com
       ECR_REPOSITORY: bank-backendapi
       AWS_REGION: us-east-1
       IMAGE_TAG: ${{ github.run_number }}
@@ -229,28 +229,28 @@ jobs:
     runs-on: self-hosted
     needs: build_and_push
     env:
-      ECR_REGISTRY: 505789306397.dkr.ecr.us-east-1.amazonaws.com
+      ECR_REGISTRY:  026764164788.dkr.ecr.us-east-1.amazonaws.com
       ECR_REPOSITORY: bank-backendapi
       IMAGE_TAG: ${{ github.run_number }}
 
     steps:
 
-    - name: Clone Kubernetes repo
+    - name: Clone kubernetes-manifest-file
       run: |
-        git clone https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_PASSWORD }}@github.com/Team-final-project/kubernetes-repo.git
-        cd kubernetes-repo
-        git config --global user.email "pod1finalproject@gmail.com"
-        git config --global user.name "pod1project"
+        git clone https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_PASSWORD }}@github.com/Benjasscloud/kubernetes-manifest-file.git
+        cd kubernetes-manifest-file
+        git config --global user.email "awsbenjass1@gmail.com"
+        git config --global user.name "benjass1"
 
     - name: Update backend image tag in manifest
       run: |
-        cd kubernetes-repo
+        cd kubernetes-manifest-file
         sed -i "s#${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:.*#${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}#g" bank-project/backendapi.yaml
         cat bank-project/backendapi.yaml
 
     - name: Commit and push changes
       run: |
-        cd kubernetes-repo
+        cd kubernetes-manifest-file
         git add bank-project/backendapi.yaml
         git commit -m "Update backendapi image to version ${{ env.IMAGE_TAG }}"
         git push origin main
